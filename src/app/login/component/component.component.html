@@ -1,0 +1,21 @@
+<div class="wrap">
+  <form [formGroup]="registerForm" (ngSubmit)="login()" autocomplete="off">
+    <img class="text-center text-primary" 
+    src="assets/images/logo.png" width="300" alt="">
+    <h2 class="text-center text-primary">DHC AMR</h2>
+    <hr>
+    <div class="mb-2">
+      <app-input formControlName="username" [control]="registerForm.controls['username']" [label]="'username'" [type]="'text'"></app-input>
+    </div>
+    <div class="mb-2">
+      <app-input formControlName="password" [control]="registerForm.controls['password']" [label]="'password'" [type]="'password'"></app-input>
+
+    </div>
+    <!-- <app-text-input formControlName="confirmPassword" [label]="'Confirm password'" [type]="'password'"></app-text-input> -->
+    <div class="form-group text-center">
+      <!-- <button class="btn btn-success mr-2" type="submit">Register</button> -->
+      <button class="btn btn-outline-primary mr-2 w-100" type="submit">Login</button>
+    </div>
+  </form>
+</div>
+  

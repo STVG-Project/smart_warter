@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary px-4">
+ 
+    <div class="container-fluid">
+        <img src="assets/images/dhlogo.png" height="32" alt="">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end ml-4" id="navbarCollapse">
+            <ul class="navbar-nav me-auto ms-3" style="font-size:0.9375rem">
+                <ng-container>
+                    <li class="nav-item" *ngFor="let item of menus"  [routerLink]="item.link" >
+                        <a class="nav-link"  routerLinkActive="active" >{{item.name}}</a>
+                    </li>
+                </ng-container>
+            </ul>
+   
+            <div class="dropdown me-4 px-3" >
+               <button class="btn btn-secondary dropdown-toggle text-light"  data-bs-toggle="dropdown"  > {{this.getCurrentUser()}}</button>
+                <div class="dropdown-menu mt-3" >
+                    <a class="dropdown-item" (click)="logOut()">Đăng xuất</a>
+                    <a class="dropdown-item" routerLink= '/upload-logo' >Cập nhật logo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+

@@ -1,0 +1,136 @@
+<app-navbar></app-navbar>
+<div class="page-body">
+    <div class="row px-1" *ngIf="dataArea">
+        <div class="col-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>{{dataArea.code}}</h5>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <h6 class="text-muted">Tên khu vực</h6>
+                        <h6>{{dataArea.name}}</h6>
+                    </div>
+                    <div>
+                        <h6 class="text-muted">Mô tả</h6>
+                        <h6>{{dataArea.desc}}</h6>
+                    </div>
+                    <div>
+                      <div class="">
+                       <h6 class="text-muted d-inline">Nhân viên ghi nhận </h6>
+                      
+                      </div>
+                        <h6>{{dataArea.user}}</h6>
+                    </div>
+                </div>
+                <!-- <div class="card-footer">
+              <div class="btn-group d-flex">
+                <button class="btn btn-primary" (click)="openModal(template)">Cập nhật thay đổi</button>
+              </div>
+            </div> -->
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-12">
+            <h5 class="mb-2">Danh sách khách hàng & thiết bị</h5>
+            <dx-data-grid #dataGrid id="gridContainer" [dataSource]="listCustomer" [remoteOperations]="false"
+                [allowColumnReordering]="true" [rowAlternationEnabled]="true" [showBorders]="true"
+                (onToolbarPreparing)="onToolbarPreparing($event)">
+                <dxo-paging [pageSize]="50"></dxo-paging>
+                <dxo-pager [showPageSizeSelector]="false"></dxo-pager>
+                <!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
+                <dxo-search-panel [visible]="true"></dxo-search-panel>
+                <dxo-header-filter [visible]="true"></dxo-header-filter>
+                <!-- <dxi-column [allowFiltering]="false" [fixed]="true" fixedPosition="left" dataField="stt" caption="STT"
+                    [width]="50" alignment="center"></dxi-column> -->
+                <dxi-column [allowSearch]="true" dataField="code" [allowHeaderFiltering]="false"
+                    [allowHeaderFiltering]="false" [allowResizing]="true" caption="Mã khách hàng" dataType="string">
+                </dxi-column>
+                <dxi-column [allowSearch]="true" [headerFilter]="false" [allowHeaderFiltering]="false" dataField="name"
+                    caption="Tên Khách Hàng" alignment="left"></dxi-column>
+                <dxi-column [allowSearch]="true" [headerFilter]="false" [allowHeaderFiltering]="false"
+                    dataField="address" [allowResizing]="true" caption="Địa chỉ" dataType="string">
+                </dxi-column>
+                <dxi-column [allowSearch]="true" [headerFilter]="false" [allowHeaderFiltering]="false"
+                    dataField="idmodel" [allowResizing]="true" caption="Seri Module" dataType="string">
+                </dxi-column>
+                <dxi-column [allowSearch]="true" [headerFilter]="false" [allowHeaderFiltering]="false"
+                    dataField="iddevice" [allowResizing]="true" caption="Seri Device" dataType="string">
+                </dxi-column>
+                <dxi-column [width]="150" [headerFilter]="false" [allowHeaderFiltering]="false" dataField="latitude"
+                    [allowResizing]="true" caption="Latitude" [alignment]="'left'" dataType="number">
+                </dxi-column>
+                <dxi-column [width]="150" [headerFilter]="false" [allowHeaderFiltering]="false" dataField="longitude"
+                    [allowResizing]="true" caption="Longitude" [alignment]="'left'" dataType="number">
+                </dxi-column>
+                <dxi-column cellTemplate="cellTemplate" caption="Vị trí" width="150"></dxi-column>
+                <dxi-column cellTemplate="actionTemplate" caption="Thao tác"  [alignment]="'center'"></dxi-column>
+                <div *dxTemplate="let d of 'actionTemplate'" class="text-center">
+                    <span style="cursor: pointer;"><i class="fa fa-trash icon-delete"></i></span>
+                </div>
+           
+                <div *dxTemplate="let d of 'cellTemplate'">
+                    <!-- <div style="color:blue">{{d.data.addressCustomer}}</div> -->
+                    <a *ngIf="d.data.latitude!.length > 0 && d.data.longitude!.length > 0"
+                        href="https://www.google.com/maps/search/?api=1&query={{d.data.latitude}},{{d.data.longitude}}"
+                        target="_blank">Xem google map</a>
+                </div>
+            </dx-data-grid>
+
+        </div>
+    </div>
+
+
+    <!-- <div class="row px-1" style="height: 100px; border:1px solid #000"></div> -->
+
+
+    <p-dialog #popUpAdd header="Add customer" [(visible)]="popupAddVisible" position="top" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false" [closable]="false">
+
+          <div class="card">
+            <div class="card-body">
+              <form [formGroup]="customerFomr" autocomplete="off" >
+                  <div class="row">
+                      <div class="col-6">
+                        <div class="mb-2">
+                            <app-input  formControlName="code"  [control]="customerFomr.controls['code']" [label]="'code'" [type]="'text'" ></app-input>
+                          </div>
+                          <div class="mb-2">
+                            <app-input  formControlName="name"  [control]="customerFomr.controls['name']"  [label]="'name'" [type]="'text'"></app-input>
+                          </div>
+                          <div class="mb-2">
+                            <app-input  formControlName="address"  [control]="customerFomr.controls['address']" [label]="'address'" [type]="'text'"></app-input>
+                          </div>
+                          <div class="mb-2">
+                            <app-input  formControlName="desc" [control]="customerFomr.controls['desc']" [label]="'description'" [type]="'text'"></app-input>
+                          </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="mb-2">
+                            <app-input  formControlName="latitude" [control]="customerFomr.controls['latitude']" [label]="'latitude'" [type]="'text'"></app-input>
+                          </div>
+                          <div class="mb-2">
+                            <app-input  formControlName="longitude" [control]="customerFomr.controls['longitude']" [label]="'longitude'" [type]="'text'"></app-input>
+                          </div>
+                          <div class="mb-2">
+                            <app-input  formControlName="iddevice" [control]="customerFomr.controls['iddevice']" [label]="'Seri device'" [type]="'text'"></app-input>
+                          </div>
+                          <div class="mb-2">
+                            <app-input  formControlName="idmodel" [control]="customerFomr.controls['idmodel']" [label]="'seri module'" [type]="'text'"></app-input>
+                          </div>
+                      </div>
+                  </div>
+     
+                <div class="mb-2">
+
+                </div>
+              </form>
+            </div>
+          </div>
+
+        <ng-template pTemplate="footer">
+          <button class="btn btn-outline-secondary" (click)="popupAddVisible = false;customerFomr.reset()">Close</button>
+          <button class="btn btn-outline-success" (click)="addCustomer()">Done</button>
+        </ng-template>
+</p-dialog>
+
+</div>

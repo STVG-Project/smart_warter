@@ -1,0 +1,142 @@
+<app-navbar></app-navbar>
+<div class="page-body">
+    <div class="row">
+        <div class="col-12">
+          <dx-data-grid #dataGrid id="gridContainer" [dataSource]="listUser" [remoteOperations]="false"
+            [allowColumnReordering]="false" [rowAlternationEnabled]="true" [showBorders]="true"    (onToolbarPreparing)="onToolbarPreparing($event)">
+            >
+            <dxo-paging [pageSize]="50"></dxo-paging>
+            <dxo-pager [showPageSizeSelector]="true"></dxo-pager>
+            <!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-header-filter [visible]="false"></dxo-header-filter>
+            <dxi-column [allowSearch]="true" [headerFilter]="true" [allowHeaderFiltering]="true" [allowFiltering]="false"
+              [allowResizing]="true" [fixed]="true" fixedPosition="left" dataField="name" caption="Mã nhân viên"
+              alignment="left">
+            </dxi-column>
+            <dxi-column [allowSearch]="true" [headerFilter]="true" [allowHeaderFiltering]="true" [allowFiltering]="false"
+              [allowResizing]="true" [fixed]="true" fixedPosition="left" dataField="username" caption="Tài khoản"
+              alignment="left">
+            </dxi-column>
+            <dxi-column [allowSearch]="true" [headerFilter]="true" [allowHeaderFiltering]="true" [allowFiltering]="false"
+              [allowResizing]="true" [fixed]="true" fixedPosition="left" dataField="password" caption="Mật khẩu"
+              alignment="left">
+            </dxi-column>
+            <dxi-column [allowSearch]="true" [headerFilter]="true" [allowHeaderFiltering]="true" [allowFiltering]="false"
+              [allowResizing]="true" [fixed]="true" fixedPosition="left" dataField="phone" caption="Số điện thoại"
+              alignment="left">
+            </dxi-column>
+      
+            <dxi-column cellTemplate="actionCell" width="100"  caption="Thao tác"></dxi-column>
+            <div *dxTemplate="let item of 'actionCell'" class="text-center">
+              <span style="cursor: pointer; " class="me-3 " (click)="getInforItem(item.data);popupEditVisible = true"><i class="fa fa-pencil-square-o icon-edit" ></i></span>
+              <span style="cursor: pointer; " class="me-3" (click)="getInforItem(item.data);popupDeleteVisible = true"><i class="fa fa-trash icon-delete"></i></span>
+            </div>
+          </dx-data-grid>
+        </div>
+      </div>
+      
+      <div class="row" style="height: 100px;"></div>
+      
+      <!-- <ng-template #template>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Upload File</h4>
+          <button type="button" class="close pull-right" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex">
+            <input #imageInput class="form-control mr-2" type="file" accept=".xlsx">
+            <button  type="button" class="btn btn-success" >Import</button>
+          </div>
+        </div>
+      </ng-template> -->
+</div>
+
+
+<!-- --------------------popup add------------------- -->
+<p-dialog #popUpAdd header="Add user" [(visible)]="popupAddVisible" position="top" [modal]="true" [style]="{width: '40vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false" [closable]="false">
+
+          <div class="card">
+            <div class="card-body">
+              <form [formGroup]="registerForm" autocomplete="off" (ngSubmit)="addUser()">
+                <div class="mb-2">
+         
+                  <app-input  formControlName="name"  [control]="registerForm.controls['name']" [label]="'code'" [type]="'text'" [dis]="true"></app-input>
+                </div>
+                <div class="mb-2">
+                  <app-input  formControlName="username"  [control]="registerForm.controls['username']"  [label]="'username'" [type]="'text'"></app-input>
+                </div>
+                <div class="mb-2">
+                  <app-input  formControlName="password"  [control]="registerForm.controls['password']" [label]="'password'" [type]="'text'"></app-input>
+                </div>
+                <div class="mb-2">
+                  <app-input  formControlName="phone" [control]="registerForm.controls['phone']" [label]="'phone'" [type]="'text'"></app-input>
+                </div>
+                <div class="mb-2">
+
+                </div>
+              </form>
+            </div>
+          </div>
+
+        <ng-template pTemplate="footer">
+          <button class="btn btn-outline-secondary" (click)="popupAddVisible = false;registerForm.reset()">Close</button>
+            <button class=" btn btn-outline-success" (click)="addUser()">Done</button>
+        </ng-template>
+</p-dialog>
+<!-- --------------------popup edit------------------- -->
+<p-dialog header="Edit user" [(visible)]="popupEditVisible" position="top" [modal]="true" [style]="{width: '40vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false" [closable]="false">
+
+          <div class="card">
+            <div class="card-body">
+              <form [formGroup]="editForm" autocomplete="off" >
+                <div class="mb-2">
+                  <span class="input-label">code</span>
+                  <div class="form-group"><input type="text"   class="form-control"[(ngModel)]="inforItem.name"  formControlName="name" placeholder="Enter code" [attr.disabled]="true"></div>
+    
+                </div>
+                <div class="mb-2">
+                  <span class="input-label">user name</span>
+                  <div class="form-group"><input type="text"   class="form-control"[(ngModel)]="inforItem.username"  formControlName="username" placeholder="Enter username" [attr.disabled]="true"></div>
+    
+                </div>
+                <div class="mb-2">
+                  <app-input  formControlName="password" [(ngModel)]="inforItem.password"  [control]="editForm.controls['password']" [label]="'password'" [type]="'text'" ></app-input>
+                </div>
+                <div class="mb-2">
+                  <app-input  formControlName="phone" [(ngModel)]="inforItem.phone"  [control]="editForm.controls['phone']" [label]="'phone'" [type]="'text'"></app-input>
+                </div>
+                <div class="mb-2">
+
+                </div>
+              </form>
+            </div>
+          </div>
+
+        <ng-template pTemplate="footer">
+          <button class="btn btn-outline-secondary" (click)="popupEditVisible = false;registerForm.reset()">Close</button>
+            <button class="btn btn-outline-info" (click)="editUser()">Done </button>
+        </ng-template>
+</p-dialog>
+
+
+<!-- ------------------------popup Delete------------------------  -->
+<p-dialog header="Delete user" [(visible)]="popupDeleteVisible" position="top" [modal]="true" [style]="{width: '30vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false" [closable]="false">
+
+          <div class="card">
+            <div class="card-body">
+                <span>Xác nhận xóa user</span><span class="text-danger"> {{inforItem.name}}</span> ?
+            </div>
+          </div>
+
+        <ng-template pTemplate="footer">
+          <button class="btn btn-outline-secondary" (click)="popupDeleteVisible = false;">Close</button>
+            <button class="btn btn-outline-danger" (click)="deleteUser()">Done</button>
+        </ng-template>
+</p-dialog>
+

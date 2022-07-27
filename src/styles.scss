@@ -1,1 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+    font-family: Roboto;
+}
+
+.page-body {
+    margin: 80px 20px 50px;
+    padding-top: 30px;
+}
+
+.icon-delete:hover {
+    color: red;
+}
+
+.icon-edit:hover {
+    color: blue;
+}
+
+.input-label {
+    font-size: 0.8em;
+    font-weight: 400;
+    color: #808080;
+}
+
+.btn-template {
+    background-color: #fff;
+    color: #333;
+    border: #ddd 1px solid;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block !important;
+    padding: 3px 7px;
+    font-family:  Roboto;
+}
+.btn-template:hover{
+    background-color: #F5F5F5;
+}
+.pointer{
+    cursor: pointer;
+}

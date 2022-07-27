@@ -1,0 +1,97 @@
+<app-navbar></app-navbar>
+<div class=" page-body">
+
+  <p-multiSelect [options]="cities" [(ngModel)]="selectedCountries2" defaultLabel="Select a City" optionLabel="name"
+	display="chip"></p-multiSelect>
+
+  <div class=" d-flex justify-content-end">
+    <dx-button
+      class="send"
+      icon="plus"
+      text="New area"
+      (onClick)="popupAddVisible=true"
+    >
+    </dx-button>
+  </div>
+ 
+  <div class="row pt-4 px-2">
+    <div *ngFor="let area of listArea" class="col-lg-3 col-md-3 col-sm-4 mb-3 px-1">
+      <area-card [area]="area" (deleteAction)="deleteArea($event)" (editArea)="getInforArea($event);popupEditVisible = true"></area-card>
+    </div>
+  </div>
+  <!-- <div class="row d-flex justify-content-end px-1 pb-4" *ngIf="totalPage">
+    <h6 class="mr-3 pt-2">Tổng cộng - {{totalPage}}</h6>
+    <pagination [boundaryLinks]="true" [totalItems]="totalPage" [itemsPerPage]="pageSize"
+      (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+      lastText="&raquo;">
+    </pagination>
+  </div> -->
+</div>
+
+
+<!-- --------------------------------------- popup addArea ----------------------------------  -->
+<p-dialog header="Add area" [(visible)]="popupAddVisible" position="top" [modal]="true" [style]="{width: '40vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false" [closable]="false">
+
+          <div class="card">
+            <div class="card-body">
+              <form [formGroup]="areaForm" autocomplete="off">
+                <div class="mb-2">
+                  <app-input  formControlName="code"  [control]="areaForm.controls['code']" [label]="'code'" [type]="'text'" [dis]="true"></app-input>
+                </div>
+                <div class="mb-2">
+                  <app-input  formControlName="name"  [control]="areaForm.controls['name']"  [label]="'name'" [type]="'text'"></app-input>
+                </div>
+                <div class="mb-2">
+                  <app-input  formControlName="desc"  [control]="areaForm.controls['desc']" [label]="'description'" [type]="'text'"></app-input>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        <ng-template pTemplate="footer">
+          <button class="btn btn-outline-secondary" (click)="popupAddVisible = false;areaForm.reset()">Close</button>
+          <button class="btn btn-outline-success" (click)="addArea()">Done</button>
+        </ng-template>
+</p-dialog>
+<!-- --------------------------------------- popup editArea ----------------------------------  -->
+<p-dialog header="Edit area" [(visible)]="popupEditVisible" position="top" [modal]="true" [style]="{width: '40vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false" [closable]="false">
+
+          <div class="card">
+            <div class="card-body">
+              <form [formGroup]="editForm" autocomplete="off">
+                <div class="form-group mb-2">
+                  <span class="input-label">code</span>
+                  <input type="text" class="form-control"  formControlName="code" [(ngModel)]="inforItem.code" [attr.disabled]="true" >
+                </div>
+                <div class="mb-2">
+                  <app-input  formControlName="name"  [control]="editForm.controls['name']"  [label]="'name'" [type]="'text'"></app-input>
+                </div>
+                <div class="mb-2">
+                  <app-input  formControlName="desc"  [control]="editForm.controls['desc']" [label]="'description'" [type]="'text'"></app-input>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        <ng-template pTemplate="footer">
+          <button class="btn btn-outline-secondary" (click)="popupEditVisible = false;editForm.reset()">Close</button>
+          <button class="btn btn-outline-info" (click)="editArea()">Done</button>
+        </ng-template>
+</p-dialog>
+<!-- --------------------------------------- popup delete ----------------------------------  -->
+<p-dialog header="Delete user" [(visible)]="popupDeleteVisible" position="top" [modal]="true" [style]="{width: '30vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false" [closable]="false">
+
+          <div class="card">
+            <div class="card-body">
+                <span>Bạn chắc chắn xóa user</span><span class="text-danger"> {{inforItem.name}}</span> ?
+            </div>
+          </div>
+
+        <ng-template pTemplate="footer">
+          <button class="btn btn-outline-secondary" (click)="popupDeleteVisible = false;">Close</button>
+            <button class="btn btn-outline-danger" (click)="subbmitDeleteArea()">Done</button>
+        </ng-template>
+</p-dialog>
