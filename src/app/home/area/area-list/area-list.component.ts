@@ -93,7 +93,7 @@ export class AreaListComponent implements OnInit {
     this.popupDeleteVisible = true
     this.inforItem = {...e}
   }
-  subbmitDeleteArea = () => {
+  submitDeleteArea = () => {
     let itemDelete:any  = {}
     itemDelete.text = this.inforItem.code
     this.apiService.post('api/User/xoakhuvuc',itemDelete).subscribe(
